@@ -1,0 +1,31 @@
+CREATE DATABASE IF NOT EXISTS coursedb;
+USE coursedb;
+
+CREATE TABLE users (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  role ENUM('STUDENT','ADMIN') NOT NULL DEFAULT 'STUDENT'
+);
+
+CREATE TABLE courses (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  description VARCHAR(2000) NOT NULL,
+  category VARCHAR(255) NOT NULL,
+  level VARCHAR(255) NOT NULL,
+  instructor VARCHAR(255) NOT NULL,
+  total_lessons INT NOT NULL
+);
+
+CREATE TABLE enrollments (
+  id BIGINT AUTO_INCREMENT PRIMARY KEY,
+  user_id BIGINT NOT NULL,
+  course_id BIGINT NOT NULL,
+  completed_lessons INT NOT NULL DEFAULT 0,
+  enrolled_at DATETIME,
+  UNIQUE (user_id, course_id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (course_id) REFERENCES courses(id)
+);
